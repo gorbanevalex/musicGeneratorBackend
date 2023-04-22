@@ -19,3 +19,45 @@ module.exports.add = async (req, res) => {
     });
   }
 };
+
+module.exports.getGenre = async (req, res) => {
+  try {
+    const tracks = await trackModel.find().select("genre");
+    const genre = new Set();
+    tracks.map((item) => {
+      item.genre.map((genreItem) => genre.add(genreItem));
+    });
+    res.json(Array.from(genre));
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: "Не удалось получить жанры",
+    });
+  }
+};
+
+module.exports.getAuthor = async (req, res) => {
+  try {
+    const tracks = await trackModel.find().select("author");
+    const authors = new Set();
+    tracks.map((item) => {
+      item.author.map((authorItem) => authors.add(authorItem));
+    });
+    res.json(Array.from(authors));
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Не удалось получить авторов",
+    });
+  }
+};
+
+module.exports.getAll = async (req, res) => {
+  try {
+    const tracks = await trackModel.find();
+    res.json(tracks);
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Не удалось получить всю музыку",
+    });
+  }
+};

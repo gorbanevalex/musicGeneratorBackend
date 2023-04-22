@@ -89,3 +89,86 @@ module.exports.getMe = async (req, res) => {
     });
   }
 };
+
+module.exports.updateLogin = async (req, res) => {
+  try {
+    userModel
+      .findOneAndUpdate(
+        {
+          _id: req.userId,
+        },
+        {
+          $set: { login: req.body.login },
+        },
+        {
+          returnDocument: "after",
+        }
+      )
+      .then((doc) => {
+        if (!doc) {
+          return res.status(404).json({
+            msg: "Не удалось обновить логин",
+          });
+        }
+        res.json(doc);
+      });
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Не удалось обновить логин",
+    });
+  }
+};
+
+module.exports.addGenre = async (req, res) => {
+  try {
+    const doc = await userModel.findById(req.userId);
+    doc.likedGenre.unshift(req.body.genre);
+    const user = await doc.save();
+    res.json(user);
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Не удалось добавить жанр",
+    });
+  }
+};
+
+module.exports.removeGenre = async (req, res) => {
+  try {
+    const doc = await userModel.findById(req.userId);
+    doc.likedGenre = doc.likedGenre.filter((item) => item !== req.params.name);
+    const user = await doc.save();
+    res.json(user);
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Не удалось удалить жанр",
+    });
+  }
+};
+
+module.exports.addAuthor = async (req, res) => {
+  try {
+    const doc = await userModel.findById(req.userId);
+    doc.likedAuthor.unshift(req.body.author);
+    const user = await doc.save();
+    res.json(user);
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Не удалось добавить автора",
+    });
+  }
+};
+
+module.exports.removeAuthor = async (req, res) => {
+  try {
+    const doc = await userModel.findById(req.userId);
+    doc.likedAuthor = doc.likedAuthor.filter(
+      (item) => item !== req.params.author
+    );
+    const user = await doc.save();
+    res.json(user);
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Не удалось удалить автора",
+    });
+  }
+};

@@ -53,7 +53,7 @@ app.post("/previews", uploadPreviews.single("preview"), (req, res) => {
 app.post("/tracks", uploadTrackss.single("track"), (req, res) => {
   try {
     res.json({
-      url: `/track/${req.file.originalname}`,
+      url: `/tracks/${req.file.originalname}`,
     });
   } catch (error) {
     res.status(500).json({
