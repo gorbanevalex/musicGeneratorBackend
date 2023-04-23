@@ -172,3 +172,40 @@ module.exports.removeAuthor = async (req, res) => {
     });
   }
 };
+
+module.exports.addTrack = async (req, res) => {
+  try {
+    const doc = await userModel.findById(req.userId);
+    doc.likedTrack.unshift(req.body.track);
+
+    const subLikedAuthor = new Set(doc.subLikedAuthor);
+    req.body.track.author.map((item) => subLikedAuthor.add(item));
+    doc.subLikedAuthor = Array.from(subLikedAuthor);
+
+    const subLikedGenre = new Set(doc.subLikedGenre);
+    req.body.track.genre.map((item) => subLikedGenre.add(item));
+    doc.subLikedGenre = Array.from(subLikedGenre);
+
+    const user = await doc.save();
+    res.json(user);
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Не удалось добавить трек",
+    });
+  }
+};
+
+module.exports.removeTrack = async (req, res) => {
+  try {
+    const doc = await userModel.findById(req.userId);
+    doc.likedTrack = doc.likedTrack.filter(
+      (item) => item._id !== req.params.id
+    );
+    const user = await doc.save();
+    res.json(user);
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Не удалось удалить трек",
+    });
+  }
+};

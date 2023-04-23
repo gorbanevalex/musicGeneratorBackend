@@ -7,6 +7,8 @@ const {
   removeGenre,
   addAuthor,
   removeAuthor,
+  addTrack,
+  removeTrack,
 } = require("../controllers/userController");
 const { checkToken } = require("../middleware/checkToken");
 
@@ -20,8 +22,10 @@ route.get("/me", checkToken, getMe);
 route.patch("/change/login", checkToken, updateLogin);
 route.patch("/genre", checkToken, addGenre);
 route.patch("/author", checkToken, addAuthor);
+route.patch("/track", checkToken, addTrack);
 
 route.delete("/genre/:name", checkToken, removeGenre);
 route.delete("/author/:author", checkToken, removeAuthor);
+route.delete("/track/:id", checkToken, removeTrack);
 
 module.exports = route;
