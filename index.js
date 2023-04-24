@@ -2,9 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const multer = require("multer");
+const socket = require("socket.io");
 
 const trackRoutes = require("./routes/trackRoute");
 const userRoutes = require("./routes/userRoute");
+const roomRoutes = require("./routes/roomRoute");
 
 require("dotenv").config();
 
@@ -18,6 +20,7 @@ app.use("/tracks", express.static("tracks"));
 
 app.use("/track", trackRoutes);
 app.use("/auth", userRoutes);
+app.use("/room", roomRoutes);
 
 const storagePreviews = multer.diskStorage({
   destination: (_, __, cb) => {
@@ -73,3 +76,20 @@ mongoose
   .then(() => {
     console.log("MongoDb already!");
   });
+
+const io = socket(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    credentialds: true,
+  },
+});
+
+io.on("connection", (socket) => {
+  socket.on("add-user", (room) => {
+    socket.join(room._id);
+    socket.to(room._id).emit("newUser-room", room);
+  });
+  socket.on("remove-user", (room) => {
+    socket.to(room._id).emit("removeUser-room", room);
+  });
+});
