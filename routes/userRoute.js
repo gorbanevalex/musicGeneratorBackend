@@ -1,4 +1,4 @@
-const {
+import {
   register,
   login,
   getMe,
@@ -9,10 +9,11 @@ const {
   removeAuthor,
   addTrack,
   removeTrack,
-} = require("../controllers/userController");
-const { checkToken } = require("../middleware/checkToken");
+} from "../controllers/userController.js";
+import { checkToken } from "../middleware/checkToken.js";
+import { Router } from "express";
 
-const route = require("express").Router();
+const route = Router();
 
 route.post("/register", register);
 route.post("/login", login);
@@ -28,4 +29,4 @@ route.delete("/genre/:name", checkToken, removeGenre);
 route.delete("/author/:author", checkToken, removeAuthor);
 route.delete("/track/:id", checkToken, removeTrack);
 
-module.exports = route;
+export default route;

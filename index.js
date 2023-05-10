@@ -1,14 +1,15 @@
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const multer = require("multer");
-const socket = require("socket.io");
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+import multer from "multer";
+import { Server } from "socket.io";
+import dotenv from "dotenv";
 
-const trackRoutes = require("./routes/trackRoute");
-const userRoutes = require("./routes/userRoute");
-const roomRoutes = require("./routes/roomRoute");
+import trackRoutes from "./routes/trackRoute.js";
+import userRoutes from "./routes/userRoute.js";
+import roomRoutes from "./routes/roomRoute.js";
 
-require("dotenv").config();
+dotenv.config();
 
 const app = express();
 
@@ -77,7 +78,7 @@ mongoose
     console.log("MongoDb already!");
   });
 
-const io = socket(server, {
+const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
     credentialds: true,

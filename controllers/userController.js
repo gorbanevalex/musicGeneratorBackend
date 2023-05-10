@@ -1,8 +1,8 @@
-const userModel = require("../models/userModel");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+import userModel from "../models/userModel.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
-module.exports.register = async (req, res) => {
+export const register = async (req, res) => {
   const checkedEmail = await userModel.findOne({
     email: req.body.email,
   });
@@ -39,7 +39,7 @@ module.exports.register = async (req, res) => {
   }
 };
 
-module.exports.login = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const user = await userModel.findOne({
       email: req.body.email,
@@ -79,7 +79,7 @@ module.exports.login = async (req, res) => {
   }
 };
 
-module.exports.getMe = async (req, res) => {
+export const getMe = async (req, res) => {
   try {
     const user = await userModel.findById(req.userId);
     res.json(user);
@@ -90,7 +90,7 @@ module.exports.getMe = async (req, res) => {
   }
 };
 
-module.exports.updateLogin = async (req, res) => {
+export const updateLogin = async (req, res) => {
   try {
     userModel
       .findOneAndUpdate(
@@ -119,7 +119,7 @@ module.exports.updateLogin = async (req, res) => {
   }
 };
 
-module.exports.addGenre = async (req, res) => {
+export const addGenre = async (req, res) => {
   try {
     const doc = await userModel.findById(req.userId);
     doc.likedGenre.unshift(req.body.genre);
@@ -132,7 +132,7 @@ module.exports.addGenre = async (req, res) => {
   }
 };
 
-module.exports.removeGenre = async (req, res) => {
+export const removeGenre = async (req, res) => {
   try {
     const doc = await userModel.findById(req.userId);
     doc.likedGenre = doc.likedGenre.filter((item) => item !== req.params.name);
@@ -145,7 +145,7 @@ module.exports.removeGenre = async (req, res) => {
   }
 };
 
-module.exports.addAuthor = async (req, res) => {
+export const addAuthor = async (req, res) => {
   try {
     const doc = await userModel.findById(req.userId);
     doc.likedAuthor.unshift(req.body.author);
@@ -158,7 +158,7 @@ module.exports.addAuthor = async (req, res) => {
   }
 };
 
-module.exports.removeAuthor = async (req, res) => {
+export const removeAuthor = async (req, res) => {
   try {
     const doc = await userModel.findById(req.userId);
     doc.likedAuthor = doc.likedAuthor.filter(
@@ -173,7 +173,7 @@ module.exports.removeAuthor = async (req, res) => {
   }
 };
 
-module.exports.addTrack = async (req, res) => {
+export const addTrack = async (req, res) => {
   try {
     const doc = await userModel.findById(req.userId);
     doc.likedTrack.unshift(req.body.track);
@@ -195,7 +195,7 @@ module.exports.addTrack = async (req, res) => {
   }
 };
 
-module.exports.removeTrack = async (req, res) => {
+export const removeTrack = async (req, res) => {
   try {
     const doc = await userModel.findById(req.userId);
     doc.likedTrack = doc.likedTrack.filter(

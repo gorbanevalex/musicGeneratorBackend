@@ -1,16 +1,23 @@
-const {
+import {
   add,
   getGenre,
   getAuthor,
   getAll,
-} = require("../controllers/trackControllers");
+  remove,
+  getOne,
+  update,
+} from "../controllers/trackControllers.js";
+import { Router } from "express";
 
-const router = require("express").Router();
+const router = Router();
 
 router.post("/add", add);
 
 router.get("/genre", getGenre);
 router.get("/author", getAuthor);
 router.get("/all", getAll);
+router.delete("/:id", remove);
+router.get("/:id", getOne);
+router.patch("/:id", update);
 
-module.exports = router;
+export default router;

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const trackSchema = new mongoose.Schema({
   name: {
@@ -29,6 +29,14 @@ const trackSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  danceability: Number,
+  duration: Number,
+  energy: Number,
+  scale: String,
+  strength: Number,
+  bpm: Number,
+  dynamicComplexity: Number,
+  loudness: Number,
 });
 
-module.exports = mongoose.model("Track", trackSchema);
+export default mongoose.model("Track", trackSchema);

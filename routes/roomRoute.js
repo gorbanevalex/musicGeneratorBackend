@@ -1,16 +1,22 @@
-const {
+import {
   add,
   addUser,
   removeUser,
   userOff,
-} = require("../controllers/roomController");
-const { checkToken } = require("../middleware/checkToken");
+  getRooms,
+  generatePlaylist,
+} from "../controllers/roomController.js";
+import { checkToken } from "../middleware/checkToken.js";
+import { Router } from "express";
 
-const router = require("express").Router();
+const router = Router();
 
+router.get("/", checkToken, getRooms);
 router.post("/", checkToken, add);
 router.post("/user", checkToken, addUser);
 router.delete("/remove/:id", checkToken, removeUser);
 router.post("/off", checkToken, userOff);
 
-module.exports = router;
+router.patch("/generate", generatePlaylist);
+
+export default router;
